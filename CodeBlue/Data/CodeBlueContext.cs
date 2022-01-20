@@ -1,3 +1,7 @@
+// <copyright file="CodeBlueContext.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
 namespace CodeBlue.Data
 {
     using CodeBlue.Models;

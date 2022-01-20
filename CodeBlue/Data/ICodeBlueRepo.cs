@@ -4,6 +4,7 @@
 
 namespace CodeBlue.Data
 {
+    using System.Collections.Generic;
     using CodeBlue.Models;
 
     /// <summary>
@@ -12,11 +13,40 @@ namespace CodeBlue.Data
     public interface ICodeBlueRepo
     {
         /// <summary>
-        /// Gets the customer by name.
+        /// Saves changes control flag.
         /// </summary>
-        /// <param name="firstname">The firstname of the Customer.</param>
-        /// <param name="surname">The surname of the Customer.</param>
+        /// <returns>A bool.</returns>
+        bool SaveChanges();
+
+        /// <summary>
+        /// Gets all the customers from the api.
+        /// </summary>
+        /// <returns>A list of Customers.</returns>
+        IEnumerable<Customer> GetAllCustomers();
+
+        /// <summary>
+        /// Gets the customer by id.
+        /// </summary>
+        /// <param name="id">The id.</param>
         /// <returns>A Customer.</returns>
-        Customer GetCustomerByName(string firstname, string surname);
+        Customer GetCustomerById(int id);
+
+        /// <summary>
+        /// Creates a customer.
+        /// </summary>
+        /// <param name="customer">The customer.</param>
+        void CreateCustomer(Customer customer);
+
+        /// <summary>
+        /// Updates the customer.
+        /// </summary>
+        /// <param name="customer">The customer.</param>
+        void UpdateCustomer(Customer customer);
+
+        /// <summary>
+        /// Deletes a customer by id.
+        /// </summary>
+        /// <param name="customer">The customer.</param>
+        void DeleteCustomer(Customer customer);
     }
 }

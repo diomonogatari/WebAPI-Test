@@ -44,10 +44,15 @@ namespace CodeBlue
         /// <param name="services">The services.</param>
         public void ConfigureServices(IServiceCollection services)
         {
-            _ = services.AddDbContext<CodeBlueContext>(opt => opt.UseSqlServer(
-                this.Configuration.GetConnectionString("ApiConnection")));
+            // add DBContext
+            var sqlConnectionString = this.Configuration.GetConnectionString("ApiConnection");
+            services.AddDbContext<CodeBlueContext>(opt => opt.UseSqlServer(sqlConnectionString));
 
             services.AddControllers();
+
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+            services.AddScoped<ICodeBlueRepo, CodeBlueRepository>();
         }
 
         /// <summary>
