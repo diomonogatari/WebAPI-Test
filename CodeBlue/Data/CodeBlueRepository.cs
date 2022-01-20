@@ -52,7 +52,6 @@ namespace CodeBlue.Data
         /// <inheritdoc/>
         public void UpdateCustomer(Customer customer)
         {
-            throw new NotImplementedException();
         }
 
         /// <inheritdoc/>

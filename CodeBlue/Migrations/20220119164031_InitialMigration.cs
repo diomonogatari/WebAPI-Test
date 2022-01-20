@@ -1,4 +1,8 @@
-﻿namespace CodeBlue.Migrations
+﻿// <copyright file="20220119164031_InitialMigration.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace CodeBlue.Migrations
 {
     using Microsoft.EntityFrameworkCore.Migrations;
 

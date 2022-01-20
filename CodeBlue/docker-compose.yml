@@ -17,8 +17,6 @@ services:
     image: diomonogatari/codeblue:latest
     build: .
     container_name: codeblueapi
-    depends_on:
-      - sqlserver
     ports:
       - "8080:80"
     environment:

@@ -27,7 +27,7 @@ namespace CodeBlue.Dtos
         /// <summary>
         /// Gets or sets the email.
         /// </summary>
-        public string Email { get; set; }
+        public string EmailAddress { get; set; }
 
         /// <summary>
         /// Gets or sets the password.

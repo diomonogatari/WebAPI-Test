@@ -1,7 +1,7 @@
 using System;
 using Xunit;
 
-namespace CodeBlueTests
+namespace Tests
 {
     /// <summary>
     /// The tests for our Controller.
@@ -14,6 +14,7 @@ namespace CodeBlueTests
         [Fact]
         public void Test1()
         {
+
         }
     }
 }
