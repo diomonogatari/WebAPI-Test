@@ -4,12 +4,13 @@
 
 namespace CodeBlue.Controllers
 {
+    using System;
     using System.Collections.Generic;
-    using AutoMapper;
     using CodeBlue.Data;
     using CodeBlue.Dtos;
     using CodeBlue.Models;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>
     /// The customer controller.
@@ -19,17 +20,15 @@ namespace CodeBlue.Controllers
     public class CustomersController : ControllerBase
     {
         private readonly ICodeBlueRepo repoCodeBlue;
-        private readonly IMapper mapper;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CustomersController"/> class.
         /// </summary>
-        /// <param name="repository">The repository.</param>
-        /// <param name="mapper">The mapper.</param>
-        public CustomersController(ICodeBlueRepo repository, IMapper mapper)
+        /// <param name="repository">The repository instance.</param>
+        /// <param name="log">The logger instance.</param>
+        public CustomersController(ICodeBlueRepo repository)
         {
             this.repoCodeBlue = repository;
-            this.mapper = mapper;
         }
 
         /// <summary>
@@ -39,9 +38,9 @@ namespace CodeBlue.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Customer>> GetAllCustomers()
         {
-            var customersList = this.repoCodeBlue.GetAllCustomers();
+            var result = this.repoCodeBlue.GetAllCustomersAsync();
 
-            return this.Ok(this.mapper.Map<IEnumerable<CustomerReadDto>>(customersList));
+            return this.Ok(result);
         }
 
         /// <summary>
@@ -52,10 +51,10 @@ namespace CodeBlue.Controllers
         [HttpGet("{id}", Name = "GetCustomerById")]
         public ActionResult<Customer> GetCustomerById(int id)
         {
-            var customerById = this.repoCodeBlue.GetCustomerById(id);
-            if (customerById != null)
+            var result = this.repoCodeBlue.GetCustomerByIdAsync(id);
+            if (result.Result != null)
             {
-                return this.Ok(this.mapper.Map<CustomerReadDto>(customerById));
+                return this.Ok(result);
             }
 
             return this.NotFound();
@@ -70,18 +69,14 @@ namespace CodeBlue.Controllers
         [HttpPost]
         public ActionResult<CustomerReadDto> CreateCustomer(CustomerCreateDto customerCreateDto)
         {
-            var customerModel = this.mapper.Map<Customer>(customerCreateDto);
-            this.repoCodeBlue.CreateCustomer(customerModel);
-            this.repoCodeBlue.SaveChanges();
+            var result = this.repoCodeBlue.CreateCustomerAsync(customerCreateDto);
 
-            var customerModelDto = this.mapper.Map<CustomerReadDto>(customerModel);
-
-            return this.CreatedAtRoute(nameof(this.GetCustomerById), new { Id = customerModelDto.Id }, customerModelDto);
+            return this.Ok(result);
         }
 
         /// <summary>
         /// Updates a customer.
-        /// PUT api/customer/{id}.
+        /// PUT api/customers/{id}.
         /// </summary>
         /// <param name="id">The id.</param>
         /// <param name="customerUpdateDto">The customer update dto.</param>
@@ -89,38 +84,28 @@ namespace CodeBlue.Controllers
         [HttpPut("{id}")]
         public ActionResult UpdateCustomer(int id, CustomerUpdateDto customerUpdateDto)
         {
-            var customerModel = this.repoCodeBlue.GetCustomerById(id);
-            if (customerModel == null)
+            try
             {
-                return this.NotFound();
+                var result = this.repoCodeBlue.UpdateCustomerAsync(id, customerUpdateDto);
             }
-
-            this.mapper.Map(customerUpdateDto, customerModel);
-
-            this.repoCodeBlue.UpdateCustomer(customerModel);
-
-            this.repoCodeBlue.SaveChanges();
+            catch (Exception e)
+            {
+                return this.NotFound(e.Message);
+            }
 
             return this.NoContent();
         }
 
         /// <summary>
         /// Deletes a customer.
-        /// DELETE api/customer/{id}.
+        /// DELETE api/customers/{id}.
         /// </summary>
         /// <param name="id">The id.</param>
         /// <returns>An ActionResult.</returns>
         [HttpDelete("{id}")]
         public ActionResult DeleteCustomer(int id)
         {
-            var customerModel = this.repoCodeBlue.GetCustomerById(id);
-            if (customerModel == null)
-            {
-                return this.NotFound();
-            }
-
-            this.repoCodeBlue.DeleteCustomer(customerModel);
-            this.repoCodeBlue.SaveChanges();
+            this.repoCodeBlue.DeleteCustomerAsync(id);
 
             return this.NoContent();
         }

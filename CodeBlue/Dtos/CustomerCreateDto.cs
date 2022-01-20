@@ -16,7 +16,7 @@ namespace CodeBlue.Dtos
         /// </summary>
         [Required]
         [MaxLength(128)]
-        public string FirstName { get; set; }
+        public string Firstname { get; set; }
 
         /// <summary>
         /// Gets or sets the surname.

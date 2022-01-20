@@ -1,5 +1,5 @@
 # Get base SDK from MSFT
-FROM mcr.microsoft.com/dotnet/sdk as build-env
+FROM mcr.microsoft.com/dotnet/sdk:3.1 as build-env
 WORKDIR /app
 
 #Copy csproj file and restore dependecies
